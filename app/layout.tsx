@@ -8,8 +8,7 @@ const inter = Inter({ subsets: ["latin"] })
 
 export const metadata: Metadata = {
   title: "Kanban Task Board",
-  description: "Project-based Kanban Task Board with drag and drop functionality",
-    generator: 'v0.dev'
+  description: "Project-based Kanban Task Board with drag and drop functionality"
 }
 
 export default function RootLayout({
