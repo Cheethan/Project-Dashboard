@@ -1,8 +1,8 @@
 "use client"
 
-import { Droppable } from "react-beautiful-dnd"
 import { useStore } from "@/lib/store"
 import { TaskCard } from "@/components/task-card"
+import { useDndContext } from "@/lib/dnd-context"
 
 interface ColumnProps {
   id: string
@@ -12,6 +12,7 @@ interface ColumnProps {
 
 export function Column({ id, title, projectId }: ColumnProps) {
   const { getTasksByColumn } = useStore()
+  const { droppableProps, isDraggingOver } = useDndContext(id)
   const tasks = getTasksByColumn(projectId, id)
 
   return (
@@ -22,20 +23,14 @@ export function Column({ id, title, projectId }: ColumnProps) {
           {tasks.length} {tasks.length === 1 ? "task" : "tasks"}
         </div>
       </div>
-      <Droppable droppableId={id}>
-        {(provided, snapshot) => (
-          <div
-            ref={provided.innerRef}
-            {...provided.droppableProps}
-            className={`flex flex-1 flex-col gap-2 overflow-auto p-2 ${snapshot.isDraggingOver ? "bg-accent/50" : ""}`}
-          >
-            {tasks.map((task, index) => (
-              <TaskCard key={task.id} task={task} index={index} />
-            ))}
-            {provided.placeholder}
-          </div>
-        )}
-      </Droppable>
+      <div
+        {...droppableProps}
+        className={`flex flex-1 flex-col gap-2 overflow-auto p-2 ${isDraggingOver ? "bg-accent/50" : ""}`}
+      >
+        {tasks.map((task, index) => (
+          <TaskCard key={task.id} task={task} index={index} />
+        ))}
+      </div>
     </div>
   )
 }

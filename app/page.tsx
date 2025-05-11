@@ -1,16 +1,6 @@
-/**
- * Kanban Task Board
- *
- * This application uses:
- * - React and TypeScript for the UI
- * - Zustand for state management
- * - react-beautiful-dnd for drag and drop
- * - npm as the package manager
- */
 "use client"
 
 import { useEffect } from "react"
-import { DragDropContext, type DropResult } from "react-beautiful-dnd"
 import { useStore } from "@/lib/store"
 import { Sidebar } from "@/components/sidebar"
 import { Board } from "@/components/board"
@@ -35,20 +25,6 @@ export default function Home() {
     loadFromLocalStorage()
   }, [loadFromLocalStorage])
 
-  const handleDragEnd = (result: DropResult) => {
-    const { destination, source, draggableId } = result
-
-    // Dropped outside the list
-    if (!destination) return
-
-    // Dropped in the same position
-    if (destination.droppableId === source.droppableId && destination.index === source.index) {
-      return
-    }
-
-    moveTask(selectedProjectId, draggableId, source.droppableId, destination.droppableId, destination.index)
-  }
-
   const selectedProject = projects.find((project) => project.id === selectedProjectId)
 
   return (
@@ -60,9 +36,7 @@ export default function Home() {
             <h1 className="text-xl font-semibold">{selectedProject ? selectedProject.name : "Select a Project"}</h1>
             <ThemeToggle />
           </header>
-          <DragDropContext onDragEnd={handleDragEnd}>
-            <Board />
-          </DragDropContext>
+          <Board />
         </div>
         {isCreateProjectOpen && <CreateProjectDialog />}
         {isCreateTaskOpen && <CreateTaskDialog />}

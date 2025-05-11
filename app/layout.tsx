@@ -1,8 +1,15 @@
-import type { Metadata } from 'next'
-import './globals.css'
+import type React from "react"
+import type { Metadata } from "next"
+import { Inter } from "next/font/google"
+import "./globals.css"
+import { DndProvider } from "@/lib/dnd-context"
+
+const inter = Inter({ subsets: ["latin"] })
 
 export const metadata: Metadata = {
-  title: 'Project Dashboard'
+  title: "Kanban Task Board",
+  description: "Project-based Kanban Task Board with drag and drop functionality",
+    generator: 'v0.dev'
 }
 
 export default function RootLayout({
@@ -11,9 +18,9 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html lang="en">
-      <body className="dark" style={{ colorScheme: 'dark' }}>
-        {children}
+    <html lang="en" suppressHydrationWarning>
+      <body className={inter.className}>
+        <DndProvider>{children}</DndProvider>
       </body>
     </html>
   )
